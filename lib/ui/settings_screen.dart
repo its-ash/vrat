@@ -126,6 +126,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ],
           ),
           const UiGap(UiSpace.lg),
+          const UiAppearanceSection(),
+          const UiGap(UiSpace.lg),
           UiUpdateSection(storeId: 'vrat', header: m.t('Updates', 'अपडेट')),
           const UiGap(UiSpace.lg),
           UiDeveloperSection(header: m.t('Developer', 'डेवलपर')),

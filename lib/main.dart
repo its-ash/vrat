@@ -23,7 +23,6 @@ class VratApp extends StatelessWidget {
       model: model,
       child: UiApp(
         title: 'Vrat',
-        themeMode: ThemeMode.system,
         accent: const Color(0xFF9B1C31), // maroon
         home: const HomeScreen(),
       ),

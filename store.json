@@ -1,0 +1,11 @@
+{
+  "id": "vrat",
+  "name": "Vrat",
+  "repo": "its-ash/vrat",
+  "package": "com.itsash.vrat",
+  "tagline": "Ekadashi, Pradosh, Sankashti and festival dates for your city, with reminders, offline.",
+  "description": "Vrat is a fasting and festival calendar for the current and next year. It lists Ekadashi (with its name and parana time), Pradosh, Purnima, Amavasya, Sankashti Chaturthi with moonrise, Vinayaka Chaturthi, Masik Shivratri and Durgashtami, and the major festivals from Makar Sankranti to Chhath. Every date is worked out on your phone for your city from the tithi, with short notes on the meaning, how it is observed and where traditions differ. Choose what to follow and get a reminder the evening before and on the morning. English and Hindi.",
+  "category": "Lifestyle",
+  "icon": "assets/icon/logo-1024.png",
+  "homepage": "https://vrat.itsash.in/"
+}

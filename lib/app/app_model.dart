@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../data/names.dart';
 import '../engine/engine.dart';
+import '../notify/home_widget.dart';
 import '../notify/reminders.dart';
 import '../vrat/calendar.dart';
 import '../vrat/observance.dart';
@@ -22,6 +23,7 @@ class AppModel extends ChangeNotifier {
 
   final SharedPreferences _prefs;
   final Reminders reminders;
+  final HomeWidgetSync widget = const HomeWidgetSync();
   bool _hindi;
   Place _place;
   final Set<String> _follow;
@@ -172,13 +174,17 @@ class AppModel extends ChangeNotifier {
     _reschedule();
   }
 
-  Future<void> _reschedule() => reminders.schedule(
-        items: upcoming,
-        place: _place,
-        hindi: _hindi,
-        eveningMinutes: _remindEvening ? _eveningMinutes : null,
-        morningMinutes: _remindMorning ? _morningMinutes : null,
-      );
+  /// Reminders and the home-screen widget both follow the same settings.
+  Future<void> _reschedule() {
+    widget.update(widgetPayload(items: upcoming, today: _today(), hindi: _hindi));
+    return reminders.schedule(
+      items: upcoming,
+      place: _place,
+      hindi: _hindi,
+      eveningMinutes: _remindEvening ? _eveningMinutes : null,
+      morningMinutes: _remindMorning ? _morningMinutes : null,
+    );
+  }
 }
 
 /// Makes the [AppModel] available below it and rebuilds dependents on change.

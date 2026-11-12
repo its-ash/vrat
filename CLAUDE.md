@@ -83,6 +83,17 @@ Notification icon: `res/drawable/ic_notification.xml` (white diya). Pinned to
 (androidx.core 1.19), which this Flutter toolchain (AGP 9.0.1) lacks. Needs core
 library desugaring (build.gradle.kts) and the permissions in the manifest.
 
+## Home-screen widget
+
+4x2 resizable widget with the next followed vrat/festival plus the two after
+it. `lib/notify/home_widget.dart` (`widgetPayload`, tested) builds compact JSON
+(ISO dates, next 60 days, followed only) and `AppModel._reschedule` sends it on
+every start/settings change over MethodChannel `com.itsash.vrat/widget`
+(`MainActivity`) into SharedPreferences `vrat_widget`. `VratWidget.kt` drops
+past dates by the local date and computes Today/Tomorrow/in N days itself
+(updatePeriodMillis 1800000); "Open Vrat to update" when nothing is left. Tap
+opens the app. Layout `widget_vrat.xml`, colors in `values*/colors.xml`.
+
 ## Code layout
 
 - `lib/app/app_model.dart`: settings, `follow` set (monthly kinds by name,

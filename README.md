@@ -8,6 +8,8 @@ Ekadashi, Pradosh, Sankashti and festival dates for your city, with reminders, o
 
 - **Upcoming list** of the next vrats and festivals with a countdown to the
   first, and a **calendar** of the year. Tap any day for the details.
+- **Home-screen widget** showing the next vrat or festival (Today, Tomorrow,
+  in N days) and the two after it, following what you chose to follow.
 - **Vrats**: Ekadashi (named, with the parana time and Hari Vasara), Pradosh,
   Purnima, Amavasya, Sankashti Chaturthi with moonrise, Vinayaka Chaturthi,
   Masik Shivratri and Masik Durgashtami.

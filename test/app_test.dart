@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -6,6 +8,7 @@ import 'package:vrat/app/app_model.dart';
 import 'package:vrat/data/places.dart';
 import 'package:vrat/engine/engine.dart';
 import 'package:vrat/main.dart';
+import 'package:vrat/notify/home_widget.dart';
 import 'package:vrat/notify/reminders.dart';
 import 'package:vrat/ui/upcoming_page.dart';
 import 'package:vrat/vrat/calendar.dart';
@@ -35,6 +38,22 @@ class FakeReminders extends Reminders {
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   UiTypography.useGoogleFonts = false;
+
+  test('widget payload keeps only the next 60 days, with ISO dates', () {
+    final all = VratCalendar(delhi).build(DateTime.utc(2026, 11, 1), DateTime.utc(2027, 3, 31));
+    final today = DateTime.utc(2026, 11, 12);
+    final json = jsonDecode(widgetPayload(items: all, today: today, hindi: false)) as Map<String, dynamic>;
+    final items = (json['items'] as List).cast<Map<String, dynamic>>();
+    expect(items, isNotEmpty);
+    expect(items.length, lessThanOrEqualTo(12));
+    final end = today.add(const Duration(days: widgetDays));
+    for (final i in items) {
+      final d = DateTime.parse('${i['d']}T00:00:00Z');
+      expect(d.isBefore(today) || d.isAfter(end), isFalse);
+      expect(i['n'], isNotEmpty);
+    }
+    expect(json['hindi'], false);
+  });
 
   group('reminder plan', () {
     final all = VratCalendar(delhi).build(DateTime.utc(2026, 11, 1), DateTime.utc(2026, 12, 31));

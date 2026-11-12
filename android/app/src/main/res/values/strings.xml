@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_description">The next vrat or festival, and the two after it.</string>
+    <string name="widget_today">Today</string>
+    <string name="widget_tomorrow">Tomorrow</string>
+    <string name="widget_in_days">in %1$d days</string>
+    <string name="widget_empty">Open Vrat to update</string>
+</resources>

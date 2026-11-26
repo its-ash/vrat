@@ -15,10 +15,13 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool? _allowed;
+  bool _checked = false;
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_checked) return;
+    _checked = true;
     AppScope.of(context).reminders.enabled.then((v) {
       if (mounted) setState(() => _allowed = v);
     });

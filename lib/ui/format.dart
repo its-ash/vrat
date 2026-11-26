@@ -50,6 +50,8 @@ extension Formatting on AppModel {
     final d = date.difference(DateTime.utc(n.year, n.month, n.day)).inDays;
     if (d == 0) return t('Today', 'आज');
     if (d == 1) return t('Tomorrow', 'कल');
+    if (d == -1) return t('Yesterday', 'बीता कल');
+    if (d < 0) return t('${-d} days ago', '${-d} दिन पहले');
     return t('in $d days', '$d दिन बाद');
   }
 }

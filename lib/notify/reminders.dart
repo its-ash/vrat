@@ -70,6 +70,8 @@ class Reminders {
 
   final FlutterLocalNotificationsPlugin _plugin;
   bool _ready = false;
+  int _gen = 0;
+  Future<void> _queue = Future<void>.value();
 
   AndroidFlutterLocalNotificationsPlugin? get _android =>
       _plugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
@@ -112,13 +114,38 @@ class Reminders {
     required bool hindi,
     int? eveningMinutes,
     int? morningMinutes,
+  }) {
+    final gen = ++_gen;
+    final next = _queue.then(
+      (_) => _scheduleRun(
+        gen: gen,
+        items: items,
+        place: place,
+        hindi: hindi,
+        eveningMinutes: eveningMinutes,
+        morningMinutes: morningMinutes,
+      ),
+    );
+    _queue = next.catchError((_) {});
+    return next;
+  }
+
+  Future<void> _scheduleRun({
+    required int gen,
+    required List<Observance> items,
+    required Place place,
+    required bool hindi,
+    int? eveningMinutes,
+    int? morningMinutes,
   }) async {
+    if (gen != _gen) return;
     await init();
-    if (!_ready) return;
+    if (!_ready || gen != _gen) return;
     try {
       await _plugin.cancelAll();
+      if (gen != _gen) return;
       if (eveningMinutes == null && morningMinutes == null) return;
-      if (!await enabled) return;
+      if (!await enabled || gen != _gen) return;
       final plan = planReminders(
         items: items,
         place: place,
@@ -130,6 +157,7 @@ class Reminders {
       // Exact alarms need a special permission on Android 12+; fall back to
       // inexact ones (a few minutes late at worst) when it is not granted.
       final exact = await _android?.canScheduleExactNotifications() ?? false;
+      if (gen != _gen) return;
       final mode = exact ? AndroidScheduleMode.exactAllowWhileIdle : AndroidScheduleMode.inexactAllowWhileIdle;
       const details = NotificationDetails(
         android: AndroidNotificationDetails(
@@ -142,6 +170,7 @@ class Reminders {
         ),
       );
       for (final r in plan) {
+        if (gen != _gen) return;
         await _plugin.zonedSchedule(
           id: r.id,
           scheduledDate: tz.TZDateTime.from(r.at, tz.UTC),
@@ -150,6 +179,7 @@ class Reminders {
           title: r.title,
           body: r.body,
         );
+        if (gen != _gen) return;
       }
     } catch (e) {
       debugPrint('Could not schedule reminders: $e');
